@@ -1,2 +1,0 @@
-({form:document.getElementById("search-form")}).form.addEventListener("submit",(function(t){t.preventDefault();const r=t.currentTarget;e.searchQuery=r.elements.searchQuery.value.trim(),e.getImages().then((e=>console.log(e)))}));const e=new class{getImages(){const e=`33319957-e5644aada7d51fb110ddf6361&q=${this.searchQuery}&image_type="phono"&orientation="horizontal"&safesearch="true"`;return fetch(`https://pixabay.com/api/?${e}`).then((e=>e.json()))}constructor(){this.queryPage=1,this.searchQuery=""}};
-//# sourceMappingURL=index.3f1faf87.js.map
