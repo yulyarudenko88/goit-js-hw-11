@@ -8,9 +8,34 @@ export default class ImagesApi {
   }
 
   getImages() {
-    const parameters = `${USER_KEY}&q=${this.searchQuery}&image_type="phono"&orientation="horizontal"&safesearch="true"`;
-    const url = `${ENDPOINT}?${parameters}`
+    const searchParams = new URLSearchParams({
+      key: USER_KEY,
+      q: `${this.searchQuery}`,
+      image_type: 'phono',
+      orientation: 'horizontal',
+      safesearch: true,
+      page: this.queryPage,
+      per_page: 40,
+    });
 
-    return fetch(url).then(response => response.json())
+    return fetch(`${ENDPOINT}?${searchParams}`).then(response =>{
+      if (!response.ok) {
+        throw new Error(response.status);
+      }      
+
+      return response.json()
+    }).then((data) => {
+      this.incrementPage();
+      // console.log(this.queryPage);
+      return data;
+    });
+  }
+
+  resetPage() {
+    this.queryPage = 1;
+  }
+
+  incrementPage() {
+    this.queryPage += 1;
   }
 }
