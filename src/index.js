@@ -2,13 +2,23 @@ import './css/styles.css';
 import ImagesApi from './js/api';
 import { makeImageCard } from './js/templates';
 import { LoadMoreBtn } from './js/loadMoreBtn';
+import { aboveBtn } from './js/aboveBtn';
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
 const ref = {
   form: document.getElementById('search-form'),
   gallery: document.querySelector('.gallery'),
 };
+
+const optionsSL = {
+  overlayOpacity: 0.5,
+  captionsData: "alt",
+  captionDelay: 250,
+};
+let simpleLightbox = new SimpleLightbox(".gallery a", optionsSL);
 
 const imagesApi = new ImagesApi();
 const loadMoreBtn = new LoadMoreBtn({
@@ -17,7 +27,9 @@ const loadMoreBtn = new LoadMoreBtn({
 });
 
 ref.form.addEventListener('submit', onSearch);
-loadMoreBtn.button.addEventListener('click', fetchImages);
+loadMoreBtn.button.addEventListener('click', onLoadMore);
+
+
 
 function onSearch(e) {
   e.preventDefault();
@@ -25,38 +37,64 @@ function onSearch(e) {
   const form = e.currentTarget;
   imagesApi.searchQuery = form.elements.searchQuery.value.trim();
 
+  clearGalleryField();
   loadMoreBtn.show();
   imagesApi.resetPage();
-  fetchImages().catch(error => console.log(error));
-}
 
-function fetchImages() {
-  loadMoreBtn.disable();
-
-  return imagesApi
+  imagesApi
     .getImages()
-    .then(({ hits }) => {
-      // console.log(hits);
+    .then(({ hits, totalHits }) => {
+      // console.log(hits, totalHits);
       if (hits.length === 0) {
         Notify.warning(
           'Sorry, there are no images matching your search query. Please try again.'
         );
+      } else {
+        createMarkup(hits);
+        simpleLightbox.refresh();
+        aboveBtn();
+        Notify.success(`Hooray! We found ${totalHits} images.`);
+        if (totalHits < imagesApi.perPage) {
+          loadMoreBtn.hide();
+        }
       }
-      return hits;
     })
-    .then(createMarkup)
-    .then(addNewCards);
+    .catch(error => {
+      console.error(error);
+      Notify.failure('Sorry, pictures are not found!');
+    });
+}
+
+function onLoadMore(e) {
+  e.preventDefault();
+
+  loadMoreBtn.disable();
+
+  const totalPages = imagesApi.queryPage * imagesApi.perPage;
+  
+  imagesApi
+    .getImages()
+    .then(({ hits, totalHits }) => {
+      if (totalPages >= totalHits) {
+        loadMoreBtn.hide();
+        simpleLightbox.refresh();
+        aboveBtn();
+        Notify.info(
+          "We're sorry, but you've reached the end of search results."
+        );
+      }
+      createMarkup(hits);
+    })
+    .catch(error => console.error(error));
 }
 
 function createMarkup(cards) {
   loadMoreBtn.enable();
 
   const markup = cards.map(card => makeImageCard(card)).join('');
-  return (ref.gallery.innerHTML = markup);
+  return ref.gallery.insertAdjacentHTML('beforeend', markup);
 }
 
-function addNewCards(markup) {
-  return document
-    .querySelector('.gallery')
-    .insertAdjacentHTML('beforeend', markup);
+function clearGalleryField() {
+  ref.gallery.innerHTML = '';
 }

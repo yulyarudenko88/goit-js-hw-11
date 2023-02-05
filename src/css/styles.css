@@ -96,8 +96,15 @@ button:focus {
   text-align: center;
   border: 1px solid #188ce8;
   border-radius: 5px;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 12%), 0 4px 4px rgb(0 0 0 / 6%), 1px 4px 6px rgb(0 0 0 / 16%);
   background-color: white;
   padding: 20px;
+  transition: transform 250ms linear;
+}
+
+.photo-card:hover {
+  cursor: pointer;
+  transform: scale(1.05);
 }
 
 img {

@@ -4,6 +4,7 @@ const USER_KEY = '33319957-e5644aada7d51fb110ddf6361';
 export default class ImagesApi {
   constructor() {
     this.queryPage = 1;
+    this.perPage = 40;
     this.searchQuery = '';
   }
 
