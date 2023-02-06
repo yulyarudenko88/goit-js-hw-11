@@ -10,13 +10,18 @@ body {
   background-color: #fafafa;
   color: #212121;
   line-height: 1.5;
-  text-align: center;
-  margin: 0px;
+    margin: 0px;
+}
+
+.form-wrapper{
+position: fixed;
+width: 100%;
+/* align-items: center; */
+background-color: #d7e0f5;
 }
 
 form {
-  /* position: fixed; */
-  background-color: #d7e0f5;
+  margin: 0 a;
   padding-top: 20px;
   padding-bottom: 20px;
 }
