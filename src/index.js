@@ -2,7 +2,7 @@ import './css/styles.css';
 import ImagesApi from './js/api';
 import { makeImageCard } from './js/templates';
 import { LoadMoreBtn } from './js/loadMoreBtn';
-import { aboveBtn } from './js/aboveBtn';
+import { smoothScroll, onTopBtn, onScroll } from './js/scrollBehavior';
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
@@ -28,6 +28,9 @@ const loadMoreBtn = new LoadMoreBtn({
 
 ref.form.addEventListener('submit', onSearch);
 loadMoreBtn.button.addEventListener('click', onLoadMore);
+
+onScroll();
+onTopBtn();
 
 async function onSearch(e) {
   e.preventDefault();
@@ -56,8 +59,7 @@ async function onSearch(e) {
     } else {
       createMarkup(hits);
       simpleLightbox.refresh();
-      aboveBtn();
-
+      
       Notify.success(`Hooray! We found ${totalHits} images.`);
       if (totalHits < imagesApi.perPage) {
         loadMoreBtn.hide();
@@ -88,7 +90,7 @@ async function onLoadMore(e) {
     } 
       createMarkup(hits);
       simpleLightbox.refresh();
-      aboveBtn();
+      smoothScroll();
   } catch (error) {
     console.error(error);
     Notify.failure('Sorry, something went wrong!');

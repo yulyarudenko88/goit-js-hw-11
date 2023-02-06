@@ -20,10 +20,10 @@ export class LoadMoreBtn {
   }
 
   hide() {
-    this.button.classList.add("hidden");
+    this.button.classList.add("is-hidden");
   }
 
   show() {
-    this.button.classList.remove("hidden");
+    this.button.classList.remove("is-hidden");
   }
 }

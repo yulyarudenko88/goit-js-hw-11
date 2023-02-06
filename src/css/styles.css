@@ -1,5 +1,7 @@
-\* {
+* {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -10,18 +12,19 @@ body {
   background-color: #fafafa;
   color: #212121;
   line-height: 1.5;
-    margin: 0px;
+  padding-top: 100px;
 }
 
-.form-wrapper{
-position: fixed;
-width: 100%;
-/* align-items: center; */
-background-color: #d7e0f5;
+.form-wrapper {
+  position: fixed;
+  z-index: 5;
+  top: 0px;
+  width: 100%;
+  text-align: center;
+  background-color: #d7e0f5;
 }
 
 form {
-  margin: 0 a;
   padding-top: 20px;
   padding-bottom: 20px;
 }
@@ -62,7 +65,7 @@ button {
   background-color: white;
   color: #188ce8;
   cursor: pointer;
-  transition: color 250ms linear;
+  transition: background-color 250ms linear;
 }
 
 button:hover,
@@ -73,7 +76,10 @@ button:focus {
 }
 
 .load-more {
+  display: block;
   margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .load-more:disabled {
@@ -83,13 +89,43 @@ button:focus {
   cursor: not-allowed;
 }
 
-.load-more.hidden {
+.load-more.is-hidden {
   display: none;
 }
 
+.on-top {
+  position: fixed;
+  right: 20px;
+  bottom: 30px;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.on-top .icon {
+  fill: #188ce8;
+  transition: color 250ms linear;
+}
+
+.on-top:hover .icon,
+.on-top:focus .icon {
+  fill: white;
+}
+
+.on-top.is-hidden {
+  opacity: 1;
+  visibility: visible;
+}
+
 .gallery {
-  margin-top: 10px;
   display: flex;
+  padding-left: 75px;
+  padding-right: 75px;
+  margin: 0 auto;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
@@ -97,11 +133,12 @@ button:focus {
 }
 
 .photo-card {
-  width: 30%;
+  flex-basis: calc((100% - 40px) / 3);
   text-align: center;
   border: 1px solid #188ce8;
   border-radius: 5px;
-  box-shadow: 0 1px 1px rgb(0 0 0 / 12%), 0 4px 4px rgb(0 0 0 / 6%), 1px 4px 6px rgb(0 0 0 / 16%);
+  box-shadow: 0 1px 1px rgb(0 0 0 / 12%), 0 4px 4px rgb(0 0 0 / 6%),
+    1px 4px 6px rgb(0 0 0 / 16%);
   background-color: white;
   padding: 20px;
   transition: transform 250ms linear;
@@ -114,6 +151,7 @@ button:focus {
 
 img {
   display: block;
+  border: 1px solid #188ce8;
   max-width: 100%;
   border-radius: 5px;
   margin-bottom: 15px;
@@ -122,15 +160,12 @@ img {
 .info {
   display: flex;
   justify-content: center;
-    gap: 30px;
-    
-
+  gap: 15px;
 }
 
 .info-item {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  margin: 0px;
   color: #188ce8;
 }
