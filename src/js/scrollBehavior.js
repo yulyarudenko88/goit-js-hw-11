@@ -1,6 +1,9 @@
-const onTopBtnRef = document.querySelector('.on-top');
+import throttle from "lodash.throttle";
 
-window.addEventListener('scroll', onScroll);
+const onTopBtnRef = document.querySelector('.on-top');
+const DELAY = 300;
+
+window.addEventListener('scroll', throttle(onScroll, DELAY));
 onTopBtnRef.addEventListener('click', onTopBtn);
 
 function smoothScroll() {

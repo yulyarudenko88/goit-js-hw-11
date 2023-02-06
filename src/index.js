@@ -39,7 +39,6 @@ async function onSearch(e) {
   imagesApi.searchQuery = form.elements.searchQuery.value.trim();
 
   clearGalleryField();
-  loadMoreBtn.show();
   imagesApi.resetPage();
 
   if (imagesApi.searchQuery === '') {
@@ -58,8 +57,9 @@ async function onSearch(e) {
       );
     } else {
       createMarkup(hits);
+      loadMoreBtn.show();
       simpleLightbox.refresh();
-      
+
       Notify.success(`Hooray! We found ${totalHits} images.`);
       if (totalHits < imagesApi.perPage) {
         loadMoreBtn.hide();
@@ -80,21 +80,20 @@ async function onLoadMore(e) {
 
   try {
     const { hits, totalHits } = await imagesApi.getImages();
-    
+
     if (totalPages >= totalHits) {
       loadMoreBtn.hide();
 
-        Notify.info(
-          "We're sorry, but you've reached the end of search results."
-        );
-    } 
-      createMarkup(hits);
-      simpleLightbox.refresh();
-      smoothScroll();
+      Notify.info("We're sorry, but you've reached the end of search results.");
+    }
+    createMarkup(hits);
+    simpleLightbox.refresh();
+    smoothScroll();
   } catch (error) {
     console.error(error);
     Notify.failure('Sorry, something went wrong!');
-  }}
+  }
+}
 
 function createMarkup(cards) {
   loadMoreBtn.enable();
